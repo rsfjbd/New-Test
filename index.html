@@ -3,218 +3,43 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>LiveTV Pro - Stable Player</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <style>
-        :root {
-            --bg: #0a0a0a;
-            --card: #161616;
-            --accent: #ff0055;
-            --text-main: #ffffff;
-            --text-dim: #a0a0a0;
-            --sidebar-width: 380px;
-        }
-
-        body, html {
-            margin: 0; padding: 0; height: 100%;
-            font-family: 'Inter', sans-serif;
-            background: var(--bg); color: var(--text-main);
-            overflow: hidden;
-        }
-
-        .app-container { display: flex; height: 100vh; width: 100vw; }
-
-        .player-section {
-            flex: 1; display: flex; flex-direction: column;
-            background: #000; padding: 24px; gap: 20px;
-            box-sizing: border-box; overflow-y: auto;
-        }
-
-        .video-container {
-            position: relative; padding-top: 56.25%;
-            background: #000; border-radius: 20px;
-            overflow: hidden; border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        /* HTML5 Video Tag Style */
-        #main-player {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%; outline: none;
-        }
-
-        .video-info { display: flex; align-items: center; justify-content: space-between; }
-        .live-badge {
-            background: var(--accent); padding: 4px 12px;
-            border-radius: 6px; font-size: 12px; font-weight: 800;
-            text-transform: uppercase; animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-
-        .sidebar {
-            width: var(--sidebar-width); background: var(--card);
-            display: flex; flex-direction: column;
-            border-left: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .search-container { padding: 24px; position: sticky; top: 0; background: var(--card); z-index: 5; }
-        #channel-search {
-            width: 100%; padding: 14px; border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2);
-            color: #fff; outline: none; box-sizing: border-box;
-        }
-
-        .category-tabs { display: flex; gap: 8px; margin-top: 15px; overflow-x: auto; padding-bottom: 5px; }
-        .cat-tab {
-            padding: 8px 16px; border-radius: 10px; border: none;
-            background: rgba(255,255,255,0.05); color: var(--text-dim);
-            cursor: pointer; white-space: nowrap; font-weight: 600;
-        }
-        .cat-tab.active { background: var(--accent); color: #fff; }
-
-        .channel-list {
-            list-style: none; padding: 0 20px 20px;
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 12px; overflow-y: auto;
-        }
-
-        .channel-item {
-            background: rgba(255,255,255,0.02); border-radius: 16px;
-            cursor: pointer; padding: 15px 10px; text-align: center;
-            border: 1px solid rgba(255,255,255,0.05); transition: 0.3s;
-        }
-        .channel-item:hover { transform: translateY(-3px); background: rgba(255,255,255,0.08); }
-        .channel-item.active { border-color: var(--accent); background: rgba(255,0,85,0.1); }
-
-        .logo-wrapper {
-            width: 60px; height: 60px; margin: 0 auto 10px;
-            background: #fff; border-radius: 14px; padding: 8px;
-        }
-        .channel-logo { width: 100%; height: 100%; object-fit: contain; }
-        .channel-name { font-size: 12px; color: var(--text-dim); }
-
-        @media (max-width: 992px) {
-            .app-container { flex-direction: column; }
-            .sidebar { width: 100%; height: 50vh; }
-            .player-section { flex: none; position: sticky; top: 0; z-index: 100; }
-        }
-    </style>
+    <title>LiveTV</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://jwpsrv.com/library/XpMfzFwiEeOfZhIxOQfUww.js"></script>
+<link href="style.css" rel="stylesheet">
+    
 </head>
 <body>
-
 <div class="app-container">
     <main class="player-section">
         <div class="video-container">
-            <video id="main-player" controls autoplay playsinline></video>
+            <!-- JW Player container div instead of iframe -->
+            <div id="main-player"></div>
         </div>
         <div class="video-info">
-            <h1 id="now-playing-title">Loading...</h1>
-            <div class="live-badge">Live</div>
+            <h1 id="now-playing-title">Select a Channel</h1>
         </div>
     </main>
-
     <aside class="sidebar">
         <div class="search-container">
-            <input id="channel-search" placeholder="Search channel...">
-            <div class="category-tabs" id="category-bar">
+            <input id="channel-search" placeholder="Search channels..." autocomplete="off">
+            <div class="category-tabs">
                 <button class="cat-tab active" data-type="all">All</button>
                 <button class="cat-tab" data-type="Sports">Sports</button>
                 <button class="cat-tab" data-type="News">News</button>
+                <button class="cat-tab" data-type="Bangla">Bangla</button>
+                <button class="cat-tab" data-type="Indian Bangla">Indian Bangla</button>
+                <button class="cat-tab" data-type="Hindi">Hindi</button>
+                <button class="cat-tab" data-type="Kids">Kids</button>
+                <button class="cat-tab" data-type="Documentary">Doc</button>
+                <button class="cat-tab" data-type="Music">Music</button>
+                <button class="cat-tab" data-type="Other">Other</button>
             </div>
         </div>
         <ul class="channel-list" id="listbar"></ul>
     </aside>
 </div>
-
-<script>
-    const video = document.getElementById('main-player');
-    const title = document.getElementById("now-playing-title");
-    let hls = null;
-
-    function initPlayer(url, name) {
-        title.innerText = name;
-
-        // যদি আগে থেকে কোনো HLS লোড থাকে তা ডিলিট করা
-        if (hls) {
-            hls.destroy();
-        }
-
-        if (Hls.isSupported()) {
-            hls = new Hls();
-            hls.loadSource(url);
-            hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                video.play();
-            });
-            
-            // এরর হ্যান্ডলিং
-            hls.on(Hls.Events.ERROR, function (event, data) {
-                if (data.fatal) {
-                    console.error("Stream error:", data);
-                }
-            });
-        } 
-        // Apple Safari/iOS এর জন্য সরাসরি সাপোর্ট
-        else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.src = url;
-            video.addEventListener('loadedmetadata', function() {
-                video.play();
-            });
-        }
-    }
-
-    // ডামি ডাটা দিয়ে পরীক্ষা (tv_channels.json না থাকলেও কাজ করবে)
-    const dummyData = {
-        "channels": [
-            {
-                "name": "Live Test Stream",
-                "logo": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png",
-                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
-                "category": "News",
-                "status": "visible"
-            },
-            {
-                "name": "Akamai Sports Test",
-                "logo": "https://upload.wikimedia.org/wikipedia/commons/7/7c/T_Sports_logo.png",
-                "url": "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8",
-                "category": "Sports",
-                "status": "visible"
-            }
-        ]
-    };
-
-    function renderChannels(list) {
-        const listBar = document.getElementById("listbar");
-        listBar.innerHTML = "";
-        list.forEach((ch) => {
-            const li = document.createElement("li");
-            li.className = "channel-item";
-            li.innerHTML = `
-                <div class="logo-wrapper"><img src="${ch.logo}" class="channel-logo"></div>
-                <div class="channel-name">${ch.name}</div>
-            `;
-            li.onclick = () => {
-                document.querySelectorAll(".channel-item").forEach(x => x.classList.remove("active"));
-                li.classList.add("active");
-                initPlayer(ch.url, ch.name);
-            };
-            listBar.appendChild(li);
-        });
-    }
-
-    // শুরুতে ডামি ডাটা দিয়ে প্লেয়ার চালু হবে
-    renderChannels(dummyData.channels);
-    initPlayer(dummyData.channels[0].url, dummyData.channels[0].name);
-
-    // আপনার tv_channels.json ফাইলটি থাকলে তা এখান থেকে লোড হবে
-    fetch("tv_channels.json")
-        .then(r => r.json())
-        .then(data => {
-            const validChannels = data.channels.filter(ch => ch.status !== "hidden");
-            renderChannels(validChannels);
-        })
-        .catch(e => console.log("JSON file not found, using dummy data."));
-</script>
 </body>
+    <script src="app.js"></script>
 </html>
+
